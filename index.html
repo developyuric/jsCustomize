@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration</title>
+    <style>
+        .entire {
+            color: white;
+            line-height: 35px;
+            border: 2px solid;
+            border-radius: 3px;
+            width: 530px;
+            padding-left: 20px;
+            padding-bottom: 20px;
+            margin: 50px;
+            background-image: url(img/bg-img.jpg);
+            background-size: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            padding: 0px 10px;
+            background-color: #fdbc90;
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .file-label:hover {
+            background-color: #fc9a22;
+        }
+
+        #file-name {
+            margin-left: 10px;
+            font-style: italic;
+            color: rgb(144, 140, 247);
+        }
+
+        input[type="submit"] {
+            padding: 8px 15px;
+            background-color: #fdbc90;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #fc9a22;
+        }
+
+        .hidden-select {
+            display: none;
+        }
+
+        /* 드롭다운 컨테이너 */
+        .custom-dropdown {
+            position: relative;
+            display: inline-block;
+            width: 140px;
+            background-color: #fdbc90;
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 1px 10px;
+            margin-left: 5px;
+            font-size: 14px;
+
+        }
+
+        /* 드롭다운 텍스트 및 화살표 */
+        .custom-dropdown:after {
+            content: "▼"; 
+            font-size: 12px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .dropdown-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fc9a22;
+            width: 100%;
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-option {
+            padding: 3px 10px;
+            color: black;
+            background-color: #fdbc90;
+            cursor: pointer;
+        }
+
+        .dropdown-option:hover {
+            background-color: #fc9a22;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="entire">
+        <h1>Employee Registration</h1>
+        <form action="/register" method="post">
+            <div>
+                Name <input type="text" name="name">
+            </div>
+            <div>
+                E-mail <input type="email" name="email">
+            </div>
+            <div>
+                Phone Number <input type="text" name="telephone">
+            </div>
+            <div>
+                Gender <input type="radio" name="gender" value="male"> Male
+                <input type="radio" name="gender" value="female"> Female
+            </div>
+            <div>
+                Department 
+                <select name="department" class="hidden-select">
+                    <option value="Development Team">Development Team</option>
+                    <option value="HR Team">HR Team</option>
+                    <option value="Sales Team">Sales Team</option>
+                    <option value="Planning Team">Planning Team</option>
+                </select>
+        
+                <div class="custom-dropdown" onclick="toggleDropdown()">
+                    Select Department
+                    <div class="dropdown-options" id="dropdownOptions">
+                        <div class="dropdown-option" onclick="selectOption('Development Team')">Development Team</div>
+                        <div class="dropdown-option" onclick="selectOption('HR Team')">HR Team</div>
+                        <div class="dropdown-option" onclick="selectOption('Sales Team')">Sales Team</div>
+                        <div class="dropdown-option" onclick="selectOption('Planning Team')">Planning Team</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                Club 
+                <input type="checkbox" name="club" value="hiking"> Hiking
+                <input type="checkbox" name="club" value="tennis"> Tennis
+                <input type="checkbox" name="club" value="basketball"> Basketball
+                <input type="checkbox" name="club" value="gaming"> Gaming
+            </div>
+            <div>
+                <label class="file-label" for="file">Choose File</label>
+                <input type="file" id="file" name="picture" onchange="displayFileName()">
+                <span id="file-name">No file chosen</span>
+            </div>
+            <div>
+                Reason for Joining
+            </div>
+            <div>
+                <textarea name="introduce" rows="10" cols="70"></textarea>
+            </div>
+            <input type="submit" value="Register"/>
+        </form>
+    </div>
+
+    <script>
+        function displayFileName() {
+            var fileInput = document.getElementById('file');
+            var fileName = document.getElementById('file-name');
+
+            if (fileInput.files.length > 0) {
+                fileName.textContent = fileInput.files[0].name;
+            } else {
+                fileName.textContent = 'No file chosen';
+            }
+        }
+         function toggleDropdown() {
+            var dropdownOptions = document.getElementById('dropdownOptions');
+            dropdownOptions.classList.toggle('show');
+        }
+
+        function selectOption(value) {
+            var dropdown = document.querySelector('.custom-dropdown');
+            dropdown.firstChild.textContent = value;
+
+            var hiddenSelect = document.querySelector('.hidden-select');
+            hiddenSelect.value = value;
+
+            toggleDropdown();
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.custom-dropdown')) {
+                var dropdowns = document.getElementsByClassName('dropdown-options');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
